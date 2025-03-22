@@ -1,16 +1,46 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon Site{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('CSS/Style.CSS') }}">
+</head>
+<body>
+<!-- Bandeau supérieur -->
+<header>
+    <img src="{{ asset('Pictures/bandeau_haut.png') }}" alt="Bandeau haut">
+</header>
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<!-- Menu -->
+<nav>
+    <ul>
+        <li><a href="{{ path('app_main') }}">Accueil</a></li>
+        <li><a href="#"></a>Gérer le profil</li>
+        <li><a href="##"></a>Lister les produits</li>
+        <li><a href="###"></a>Gérer le panier</li>
+        <li><a href="####"></a>Gérer les clients</li>
+        <li><a href="#####"></a>Créer un produit</li>
+        <li><a href="######"></a>Lien vers site extérieur</li>
+        <li><a href="#######"></a>Gérer son profil</li>
+        <li><a href="########"></a>Gérer les administrateurs</li>
+        {% if app.user %}
+            <li><a href=".">Déconnexion</a></li>
+        {% else %}
+            <li><a href="..">Connexion</a></li>
+            <li><a href="...">Créer un compte</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<!-- Contenu -->
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<!-- Pied de page -->
+<footer>
+    <img src="{{ asset('Pictures/bandeau_bas.png') }}" alt="bandeau bas">
+</footer>
+</body>
 </html>
