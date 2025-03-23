@@ -15,7 +15,7 @@
 <!-- Menu -->
 <nav>
     <ul>
-        <li><a href="{{ path('app_main') }}">Accueil</a></li>
+        <li><a href="{{ path('main') }}">Accueil</a></li>
         <li><a href="#"></a>Gérer le profil</li>
         <li><a href="##"></a>Lister les produits</li>
         <li><a href="###"></a>Gérer le panier</li>
@@ -25,10 +25,10 @@
         <li><a href="#######"></a>Gérer son profil</li>
         <li><a href="########"></a>Gérer les administrateurs</li>
         {% if app.user %}
-            <li><a href=".">Déconnexion</a></li>
+            <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>
         {% else %}
-            <li><a href="..">Connexion</a></li>
-            <li><a href="...">Créer un compte</a></li>
+            <li><a href="{{ path('security_login') }}">Connexion</a></li>
+            <li><a href="">Créer un compte</a></li>
         {% endif %}
     </ul>
 </nav>

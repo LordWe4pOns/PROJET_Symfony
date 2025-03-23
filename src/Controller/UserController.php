@@ -6,11 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class MainController extends AbstractController
+#[Route('/user', name: 'app_user')]
+final class UserController extends AbstractController
 {
-    #[Route('/', name: 'main')]
-    public function index(): Response
-    {
-        return $this->render('Main/index.html.twig');
-    }
+
 }
