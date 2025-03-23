@@ -28,7 +28,7 @@
             <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>
         {% else %}
             <li><a href="{{ path('security_login') }}">Connexion</a></li>
-            <li><a href="">Créer un compte</a></li>
+            <li><a href="{{ path('register') }}">Créer un compte</a></li>
         {% endif %}
     </ul>
 </nav>
