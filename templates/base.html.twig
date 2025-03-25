@@ -22,7 +22,7 @@
         <li><a href="####"></a>Gérer les clients</li>
         <li><a href="#####"></a>Créer un produit</li>
         <li><a href="######"></a>Lien vers site extérieur</li>
-        <li><a href="#######"></a>Gérer son profil</li>
+        <li><a href="{{ path('user_profile') }}">Gérer son profil</a></li>
         <li><a href="########"></a>Gérer les administrateurs</li>
         {% if app.user %}
             <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>

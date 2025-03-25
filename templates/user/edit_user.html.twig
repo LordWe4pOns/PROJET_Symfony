@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello !{% endblock %}
+
+{% block body %}
+    <h1>Hello {{ user.name }} !</h1>
+
+    {{ form_errors(editForm) }}
+
+    {{ form_start(editForm) }}
+        {{ form_row(editForm.login) }}
+        {{ form_row(editForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(editForm.name) }}
+        {{ form_row(editForm.surname) }}
+        {{ form_row(editForm.country) }}
+        {{ form_row(editForm.birthday) }}
+
+    <button type="submit" class="btn">Register</button>
+    {{ form_end(editForm) }}
+
+{% endblock %}

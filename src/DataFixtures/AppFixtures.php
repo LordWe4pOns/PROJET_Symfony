@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Country;
+use App\Entity\Expansion;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -170,7 +171,7 @@ class AppFixtures extends Fixture
             ->setPassword($this->passwordHasher->hashPassword($user2,'luap'))
             ->setName('Paul')
             ->setSurname('Sarazin')
-            ->setBirthday(date_create("2003-12-01")) // je sais plus quel jour dsl
+            ->setBirthday(date_create("2003-12-12"))
             ->setRoles(['ROLE_ADMIN'])
             ->setCountry($country1);
         $manager->persist($user6);
