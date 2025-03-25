@@ -7,9 +7,18 @@ header img {
 footer img {
     width: 100%;
     height: 10%;
+    position: absolute;
+    top: 100px;
+    left: 100px;
 }
 
 /* Style pour le menu */
+nav {
+    background-color: black;
+    padding: 10px 0;
+    text-align: center;
+}
+
 nav ul {
     list-style-type: none; /* pour enlever les points entre chaque onglet */
     padding: 0;

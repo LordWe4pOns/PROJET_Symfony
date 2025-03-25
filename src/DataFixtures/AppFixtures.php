@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Booster;
 use App\Entity\Country;
+use App\Entity\Expansion;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -110,6 +112,48 @@ class AppFixtures extends Fixture
             ->setCode('LR');
         $manager->persist($country15);
 
+        $country16 = new Country();
+        $country16
+            ->setName('Nilfgaard')
+            ->setCode('NF');
+        $manager->persist($country16);
+
+        $country17 = new Country();
+        $country17
+            ->setName('Rédanie')
+            ->setCode('RD');
+        $manager->persist($country17);
+
+        $country18 = new Country();
+        $country18
+            ->setName('Kaedwen')
+            ->setCode('KD');
+        $manager->persist($country18);
+
+        $country19 = new Country();
+        $country19
+            ->setName('Léviathe')
+            ->setCode('LV');
+        $manager->persist($country19);
+
+        $country20 = new Country();
+        $country20
+            ->setName('Sombronces')
+            ->setCode('SB');
+        $manager->persist($country20);
+
+        $country21 = new Country();
+        $country21
+            ->setName("Hyrule")
+            ->setCode('HR');
+        $manager->persist($country21);
+
+        $country22 = new Country();
+        $country22
+            ->setName("Bourgpalette")
+            ->setCode('BP');
+        $manager->persist($country22);
+
         // alimentation user
 
         $user1 = new User();
@@ -174,6 +218,91 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setCountry($country1);
         $manager->persist($user6);
+
+        $expansion1 = new expansion();
+        $expansion1
+            ->setName("écarlate et violet")
+            ->setNumber(9);
+        $manager->persist($expansion1);
+
+        $expansion2 = new expansion();
+        $expansion2
+            ->setName("épée et bouclier")
+            ->setNumber(8);
+        $manager->persist($expansion2);
+
+        $booster1 = new booster();
+        $booster1
+            ->setExpansion($expansion1)
+            ->setCountry($country1)
+            ->setName("évolutions à Paldea")
+            ->setPrice(6)
+            ->setStock(150);
+        $manager->persist($booster1);
+
+        $booster2 = new booster();
+        $booster2
+            ->setExpansion($expansion1)
+            ->setCountry($country1)
+            ->setName("flammes obsidiennes")
+            ->setPrice(7)
+            ->setStock(150);
+        $manager->persist($booster2);
+
+        $booster3 = new booster();
+        $booster3
+            ->setExpansion($expansion1)
+            ->setCountry($country1)
+            ->setName("faille paradoxe")
+            ->setPrice(6)
+            ->setStock(150);
+        $manager->persist($booster3);
+
+        $booster4 = new booster();
+        $booster4
+            ->setExpansion($expansion1)
+            ->setCountry($country1)
+            ->setName("étincelles déferlantes")
+            ->setPrice(7)
+            ->setStock(150);
+        $manager->persist($booster4);
+
+        $booster5 = new booster();
+        $booster5
+            ->setExpansion($expansion2)
+            ->setCountry($country1)
+            ->setName("clash des rebelles")
+            ->setPrice(6)
+            ->setStock(150);
+        $manager->persist($booster5);
+
+        $booster6 = new booster();
+        $booster6
+            ->setExpansion($expansion2)
+            ->setCountry($country1)
+            ->setName("règne de glace")
+            ->setPrice(6)
+            ->setStock(150);
+        $manager->persist($booster6);
+
+        $booster7 = new booster();
+        $booster7
+            ->setExpansion($expansion2)
+            ->setCountry($country1)
+            ->setName("stars étincelantes")
+            ->setPrice(7)
+            ->setStock(150);
+        $manager->persist($booster7);
+
+        $booster8 = new booster();
+        $booster8
+            ->setExpansion($expansion2)
+            ->setCountry($country1)
+            ->setName("origine perdue")
+            ->setPrice(7)
+            ->setStock(150);
+        $manager->persist($booster8);
+
 
         $manager->flush();
     }

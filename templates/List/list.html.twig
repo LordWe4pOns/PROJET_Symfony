@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block body %}
+    <h2>Liste des Produits du site</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Libellé</th>
+            <th>Prix Unitaire</th>
+            <th>Stock Disponible</th>
+            <th>Quantité</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for boosters in boosters %}
+            <tr>
+                <td>{{ boosters.name }}</td>
+                <td>{{ boosters.price }} €</td>
+                <td>{{ boosters.stock }}</td>
+                <td>
+                    {% if boosters.stock > 0 or panier[boosters.id] > 0 %}
+                        <form action="{{ path('cart') }}" method="post">
+                            <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
+
+                            <select name="quantite">
+                                {% for i in range(-panier[boosters.id]|default(0), boosters.stock) %}
+                                    <option value="{{ i }}" {% if i == 0 %}selected{% endif %}>
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            <button type="submit">Ajouter au panier</button>
+                        </form>
+                    {% else %}
+                        <!-- Pas de liste déroulante ni de bouton si stock = 0 et panier = 0 -->
+                        <span>Indisponible</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
