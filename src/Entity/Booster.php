@@ -22,7 +22,7 @@ class Booster
     private ?Expansion $expansion = null;
 
     #[ORM\Column]
-    private ?int $price = null;
+    private ?float $price = null;
 
     #[ORM\Column]
     private ?int $stock = null;
@@ -65,7 +65,7 @@ class Booster
         return $this->price;
     }
 
-    public function setPrice(int $price): static
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
