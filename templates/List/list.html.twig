@@ -27,7 +27,7 @@
                             <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
 
                             <select name="quantite">
-                                {% for i in range(-panier[boosters.id]|default(0), boosters.stock) %}
+                                {% for i in range(-cart[boosters.id]|default(0), boosters.stock) %}
                                     <option value="{{ i }}" {% if i == 0 %}selected{% endif %}>
                                         {{ i }}
                                     </option>

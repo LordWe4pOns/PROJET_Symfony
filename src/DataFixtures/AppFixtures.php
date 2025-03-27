@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Booster;
+use App\Entity\Cart;
 use App\Entity\Country;
 use App\Entity\Expansion;
 use App\Entity\User;
@@ -167,6 +168,11 @@ class AppFixtures extends Fixture
             ->setCountry($country1);
         $manager->persist($user1);
 
+        $cart1 = new Cart();
+        $cart1
+            ->setUser($user1);
+        $manager->persist($cart1);
+
         $user2 = new User();
         $user2
             ->setLogin('gilles')
@@ -176,6 +182,11 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setCountry($country1);
         $manager->persist($user2);
+
+        $cart2 = new Cart();
+        $cart2
+            ->setUser($user2);
+        $manager->persist($cart2);
 
         $user3 = new User();
         $user3
@@ -187,6 +198,11 @@ class AppFixtures extends Fixture
             ->setCountry($country1);
         $manager->persist($user3);
 
+        $cart3 = new Cart();
+        $cart3
+            ->setUser($user3);
+        $manager->persist($cart3);
+
         $user4 = new User();
         $user4
             ->setLogin('boumediene')
@@ -196,6 +212,11 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_USER'])
             ->setCountry($country1);
         $manager->persist($user4);
+
+        $cart4 = new Cart();
+        $cart4
+            ->setUser($user4);
+        $manager->persist($cart4);
 
         $user5 = new User();
         $user5
@@ -208,6 +229,11 @@ class AppFixtures extends Fixture
             ->setCountry($country9);
         $manager->persist($user5);
 
+        $cart5 = new Cart();
+        $cart5
+            ->setUser($user5);
+        $manager->persist($cart5);
+
         $user6 = new User();
         $user6
             ->setLogin('paul')
@@ -218,6 +244,11 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setCountry($country1);
         $manager->persist($user6);
+
+        $cart6 = new Cart();
+        $cart6
+            ->setUser($user6);
+        $manager->persist($cart6);
 
         $expansion1 = new expansion();
         $expansion1
