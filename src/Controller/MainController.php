@@ -35,49 +35,33 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/cart/add', name: 'cart_add', methods: ['POST'])]
-    public function addToCart(Request $request, EntityManagerInterface $manager): Response
+    #[Route('/cart/add/{id}', name: 'cart_add', methods: ['POST'])]
+    public function addToCart(int $id, Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        $boosterId = $request->request->get('boosters_id');
-        $quantity = (int) $request->request->get('quantite');
-
-        if ($quantity === 0) {
-            return $this->redirectToRoute('list');
-        }
-
-        $booster = $manager->getRepository(Booster::class)->find($boosterId);
+        $booster = $manager->getRepository(Booster::class)->find($id);
         if (!$booster) {
-            throw $this->createNotFoundException('Produit introuvable');
+            throw $this->createNotFoundException("Ce produit n'existe pas.");
         }
 
-        // Vérifie si l'utilisateur a déjà cet article dans son panier
         $cart = $user->getCart();
-
-        if ($cart) {
-            // Mise à jour de la quantité
-            $newQuantity = $cart->getQuantity() + $quantity;
-
-            if ($newQuantity <= 0) {
-                // Si la nouvelle quantité est 0 ou négative, on supprime l'article du panier
-                $manager->remove($cart);
-            } else {
-                $cart->setQuantity($newQuantity);
-            }
-        } else {
-            // Création d'un nouvel article dans le panier
-            if ($quantity > 0) {
-                $cart = new Cart();
-                $cart->setUser($user);
-                $cart->addContent($booster);
-                $manager->persist($cart);
-            }
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->setUser($user);
+            $manager->persist($cart);
         }
+
+        // Récupère la quantité envoyée par le formulaire
+        $quantity = (int) $request->request->get('quantite', 1);
+
+        $cart->addContent($booster, $quantity);
+        $manager->persist($cart);
         $manager->flush();
+
         return $this->redirectToRoute('cart');
     }
 

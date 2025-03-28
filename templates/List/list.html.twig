@@ -8,11 +8,10 @@
     <table>
         <thead>
         <tr>
-            <th>Libellé</th>
-            <th>Prix Unitaire</th>
-            <th>Stock Disponible</th>
+            <th>Nom du booster</th>
+            <th>Prix à l'unité</th>
+            <th>Stock restant</th>
             <th>Quantité</th>
-            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -22,24 +21,18 @@
                 <td>{{ boosters.price }} €</td>
                 <td>{{ boosters.stock }}</td>
                 <td>
-                    {% if boosters.stock > 0 or panier[boosters.id] > 0 %}
-                        <form action="{{ path('cart') }}" method="post">
-                            <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
+                    <form action="{{ path('cart_add', { 'id': boosters.id }) }}" method="post">
+                        <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
 
-                            <select name="quantite">
-                                {% for i in range(-cart[boosters.id]|default(0), boosters.stock) %}
-                                    <option value="{{ i }}" {% if i == 0 %}selected{% endif %}>
-                                        {{ i }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                        <label for="quantite_{{ boosters.id }}">Quantité :</label>
+                        <select name="quantite" id="quantite_{{ boosters.id }}">
+                            {% for i in range(1, boosters.stock) %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
 
-                            <button type="submit">Ajouter au panier</button>
-                        </form>
-                    {% else %}
-                        <!-- Pas de liste déroulante ni de bouton si stock = 0 et panier = 0 -->
-                        <span>Indisponible</span>
-                    {% endif %}
+                        <button type="submit">Ajouter au panier</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
