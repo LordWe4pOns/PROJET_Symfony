@@ -3,6 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h1>Bienvenue sur CardsShop</h1>
+    {% set fullname = app.user ? app.user.name ~ ' ' ~ app.user.surname : 'Client Anonyme' %}
+    <h1>Bienvenue sur CardsShop, {{ fullname }} !</h1>
     <p>Ce site est en construction.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.<br/>.</p>
 {% endblock %}
