@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des admins{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un administrateur</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+    {{ form_row(registrationForm.login) }}
+    {{ form_row(registrationForm.plainPassword, {
+        label: 'Password'
+    }) }}
+    {{ form_row(registrationForm.name) }}
+    {{ form_row(registrationForm.surname) }}
+    {{ form_row(registrationForm.country) }}
+    {{ form_row(registrationForm.birthday) }}
+
+    <button type="submit" class="btn">Ajouter</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}
