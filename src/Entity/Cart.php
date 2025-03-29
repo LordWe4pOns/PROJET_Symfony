@@ -21,14 +21,14 @@ class Cart
     private ?User $user = null;
 
     /**
-     * @var Collection<int, Booster>
+     * @var Collection<int, CartContent>
      */
-    #[ORM\ManyToMany(targetEntity: Booster::class)]
-    private Collection $content;
+    #[ORM\OneToMany(targetEntity: CartContent::class, mappedBy: 'cart', orphanRemoval: true)]
+    private Collection $cartContents;
 
     public function __construct()
     {
-        $this->content = new ArrayCollection();
+        $this->cartContents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,18 +56,32 @@ class Cart
         return $this->content;
     }
 
-    public function addContent(Booster $content): static
+    /**
+     * @return Collection<int, CartContent>
+     */
+    public function getCartContents(): Collection
     {
-        if (!$this->content->contains($content)) {
-            $this->content->add($content);
+        return $this->cartContents;
+    }
+
+    public function addCartContent(CartContent $cartContent): static
+    {
+        if (!$this->cartContents->contains($cartContent)) {
+            $this->cartContents->add($cartContent);
+            $cartContent->setCart($this);
         }
 
         return $this;
     }
 
-    public function removeContent(Booster $content): static
+    public function removeCartContent(CartContent $cartContent): static
     {
-        $this->content->removeElement($content);
+        if ($this->cartContents->removeElement($cartContent)) {
+            // set the owning side to null (unless already changed)
+            if ($cartContent->getCart() === $this) {
+                $cartContent->setCart(null);
+            }
+        }
 
         return $this;
     }
