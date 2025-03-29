@@ -53,6 +53,11 @@ class Booster
         return $this->expansion;
     }
 
+    public function getExpansionName(): ?String
+    {
+        return $this->expansion->getName();
+    }
+
     public function setExpansion(?Expansion $expansion): static
     {
         $this->expansion = $expansion;

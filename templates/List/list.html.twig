@@ -11,6 +11,7 @@
             <th>Nom du booster</th>
             <th>Prix à l'unité</th>
             <th>Stock restant</th>
+            <th>Extension du booster</th>
             <th>Quantité</th>
         </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ boosters.name }}</td>
                 <td>{{ boosters.price }} €</td>
                 <td>{{ boosters.stock }}</td>
+                <td>{{ boosters.expansionName }}</td>
                 <td>
                     <form action="{{ path('cart_add', { 'id': boosters.id }) }}" method="post">
                         <input type="hidden" name="boosters_id" value="{{ boosters.id }}">

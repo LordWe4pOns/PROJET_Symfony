@@ -30,7 +30,7 @@
             <li><a href="{{ path('cart') }}">Gérer le panier</a></li>
             {% if 'ROLE_ADMIN' in app.user.roles %}
                 <li><a href="{{ path('user_gestion_clients') }}">Gérer les clients</a></li>
-                <li><a href="#####">Créer un produit</a></li>
+                <li><a href="{{ path('booster') }}">Créer un produit</a></li>
                 <li><a href="https://fr.wikipedia.org/wiki/Pong">Lien vers site extérieur</a></li>
             {% endif %}
             {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
