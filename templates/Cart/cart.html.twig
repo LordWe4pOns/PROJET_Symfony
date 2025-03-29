@@ -12,7 +12,6 @@
             <tr>
                 <th>Produit</th>
                 <th>Quantité</th>
-                <th>Prix à l'unité</th>
                 <th>Total</th>
                 <th>Action</th>
             </tr>
@@ -20,10 +19,9 @@
                 <tr>
                     <td>{{ cart.booster.nom }}</td>
                     <td>{{ cart.quantite }}</td>
-                    <td>{{ cart.booster.prix }}€</td>
                     <td>{{ cart.booster.prix * cart.quantite }}€</td>
                     <td>
-                        <a href="###">❌ Supprimer</a>
+                        <a href="###">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
