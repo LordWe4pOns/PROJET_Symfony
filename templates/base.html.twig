@@ -9,7 +9,15 @@
 <body>
 <!-- Bandeau supérieur -->
 <header>
-    <img src="{{ asset('Pictures/bandeau_haut.png') }}" alt="Bandeau haut">
+    {% if app.user.roles is defined and 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        <img src="{{ asset('Pictures/bandeau_haut_sadmin.png') }}" alt="Bandeau Super-admin">
+    {% elseif app.user.roles is defined and 'ROLE_ADMIN' in app.user.roles %}
+        <img src="{{ asset('Pictures/bandeau_haut_admin.png') }}" alt="Bandeau Admin">
+    {% elseif app.user.roles is defined and 'ROLE_USER' in app.user.roles %}
+        <img src="{{ asset('Pictures/bandeau_haut_user.png') }}" alt="Bandeau Utilisateur">
+    {% else %}
+        <img src="{{ asset('Pictures/bandeau_haut_visiteur.png') }}" alt="Bandeau Visiteur">
+    {% endif %}
 </header>
 
 <!-- Menu -->
@@ -44,7 +52,7 @@
 <!-- Pied de page -->
 <footer>
     <br/>
-    <img src="{{ asset('Pictures/bandeau_footer.png') }}" alt="bandeau bas">
+    <img src="{{ asset('Pictures/bandeau_footer.png') }}" alt="Bandeau Bas">
 </footer>
 </body>
 </html>
