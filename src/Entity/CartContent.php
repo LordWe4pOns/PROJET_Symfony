@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CartContentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'l3_cart_content')]
 #[ORM\Entity(repositoryClass: CartContentRepository::class)]
 class CartContent
 {
