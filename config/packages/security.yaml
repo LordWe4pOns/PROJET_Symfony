@@ -39,10 +39,13 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/$, roles: PUBLIC_ACCESS }
-        - { path: ^/security/login, roles: PUBLIC_ACCESS }
+        - { path: ^/security, roles: PUBLIC_ACCESS }
+        - { path: /profile$, roles: IS_AUTHENTICATED_FULLY}
         - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/product/add, roles: ROLE_ADMIN }
+        - { path: ^/product, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/superadmin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/sadmin, roles: ROLE_SUPER_ADMIN }
 
 when@test:
     security:

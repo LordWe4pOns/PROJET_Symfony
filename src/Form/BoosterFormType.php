@@ -20,11 +20,11 @@ class BoosterFormType extends AbstractType
             ->add('stock')
             ->add('expansion', EntityType::class, [
                 'class' => Expansion::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }

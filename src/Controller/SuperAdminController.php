@@ -11,10 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class EditAdminController extends AbstractController
+#[Route('/sadmin', name: 'sadmin')]
+final class SuperAdminController extends AbstractController
 {
-    #[Route('/edit/admin', name: 'edit_admin')]
-    public function editAdmin(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/edit/Admin', name: '_edit_admin')]
+    public function editAdminAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(EditAdminFormType::class, $user);

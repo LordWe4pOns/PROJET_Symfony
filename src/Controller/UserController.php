@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Booster;
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,37 +44,50 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/clients', name: '_gestion_clients')]
-    public function gestionClientsAction(EntityManagerInterface $entityManager): Response
+    #[Route('/cart', name: '_cart')]
+    public function cartAction(EntityManagerInterface $manager): Response
     {
-        $clients = $entityManager->getRepository(User::class)->findAll();
+        // Récupération du panier de l'utilisateur connect
+        $user = $this->getUser();
+        $cart = $user->getCart() ?? [];
+        $totalPrice = 0;
 
-        return $this->render('user/clients.html.twig', ['clients' => $clients]);
+        foreach ($cart as $booster) {
+            $totalPrice += $booster->getQuantity() * $booster->getBooster()->getPrice();
+        }
+        return $this->render('user/cart.html.twig', [
+            'cart' => $cart,
+            'totalPrice' => $totalPrice
+        ]);
     }
 
-    #[Route('/delete/{id}', name: '_delete', requirements: ['id' => '[1-9]\d*'])]
-    public function deleteAction(EntityManagerInterface $entityManager, int $id): Response
+    #[Route('/cart/add/{id}', name: '_cart_add', methods: ['POST'])]
+    public function addToCartAction(int $id, Request $request, EntityManagerInterface $manager): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($id);
-
-        if (is_null($user))
-            throw $this->createNotFoundException('erreur suppression client ' . $id . ' : le client n\'existe pas');
-
-        if ($this->getUser() !== $user && !in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles()))
-        {
-            $cart = $user->getCart();
-            if (!is_null($cart))
-            {
-                $content = $cart->getContent()->getValues();
-                for ($i = 0; $i < count($content); $i++)
-                {
-                    $content[$i]->setStock($content[$i]->getStock() + 1);
-                }
-                $entityManager->remove($cart);
-            }
-            $entityManager->remove($user);
-            $entityManager->flush();
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
-        return $this->redirectToRoute('user_gestion_clients');
+
+        $booster = $manager->getRepository(Booster::class)->find($id);
+        if (!$booster) {
+            throw $this->createNotFoundException("Ce produit n'existe pas.");
+        }
+
+        $cart = $user->getCart();
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->setUser($user);
+            $manager->persist($cart);
+        }
+
+        // Récupère la quantité envoyée par le formulaire
+        $quantity = (int) $request->request->get('quantite', 1);
+
+        $cart->addContent($booster, $quantity);
+        $manager->persist($cart);
+        $manager->flush();
+
+        return $this->redirectToRoute('cart');
     }
 }

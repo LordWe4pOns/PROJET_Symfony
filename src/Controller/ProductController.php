@@ -10,10 +10,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class BoosterController extends AbstractController
+#[Route('/product', name: 'product')]
+final class ProductController extends AbstractController
 {
-    #[Route('/booster', name: 'booster')]
-    public function booster(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/list', name: '_list')]
+    public function listAction(EntityManagerInterface $manager): Response
+    {
+        // Récupération de tous les boosters en base de données
+        $boosters = $manager->getRepository(Booster::class)->findAll();
+
+        return $this->render('Product/list.html.twig', [
+            'boosters' => $boosters
+        ]);
+    }
+
+    #[Route('/add/booster', name: '_add_booster')]
+    public function boosterAction(Request $request, EntityManagerInterface $entityManager): Response
     {
         $booster = new Booster();
         $form = $this->createForm(BoosterFormType::class, $booster);
@@ -26,7 +38,7 @@ final class BoosterController extends AbstractController
             return $this->redirectToRoute('list');
         }
 
-        return $this->render('Booster/booster.html.twig', [
+        return $this->render('Product/booster.html.twig', [
             'BoosterForm' => $form,
         ]);
     }

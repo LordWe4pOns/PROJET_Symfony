@@ -31,7 +31,7 @@
                 </td>
                 <td>{{ client.country.name }} ({{ client.country.code }})</td>
                 {% if app.user.id is not same as(client.id) and 'ROLE_ADMIN' not in client.roles and 'ROLE_SUPER_ADMIN' not in client.roles %}
-                <td><button onclick="window.location.href='{{ path('user_delete', {id: client.id}) }}'">Supprimer</button></td>
+                <td><button onclick="window.location.href='{{ path('admin_delete', {id: client.id}) }}'">Supprimer</button></td>
                 {% endif %}
             </tr>
         {% endfor %}

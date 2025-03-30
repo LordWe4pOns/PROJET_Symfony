@@ -23,7 +23,7 @@
                 <td>{{ boosters.stock }}</td>
                 <td>{{ boosters.expansionName }}</td>
                 <td>
-                    <form action="{{ path('cart_add', { 'id': boosters.id }) }}" method="post">
+                    <form action="{{ path('user_cart_add', { 'id': boosters.id }) }}" method="post">
                         <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
 
                         <label for="quantite_{{ boosters.id }}">Quantité :</label>

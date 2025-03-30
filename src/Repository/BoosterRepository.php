@@ -17,7 +17,7 @@ class BoosterRepository extends ServiceEntityRepository
     }
 
     //    /**
-    //     * @return Booster[] Returns an array of Booster objects
+    //     * @return Product[] Returns an array of Product objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class BoosterRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Booster
+    //    public function findOneBySomeField($value): ?Product
     //    {
     //        return $this->createQueryBuilder('b')
     //            ->andWhere('b.exampleField = :val')

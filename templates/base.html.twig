@@ -26,15 +26,17 @@
         {% if app.user %}
             <li><a href="{{ path('main') }}">Accueil</a></li>
             <li><a href="{{ path('user_profile') }}">Gérer le profil</a></li>
-            <li><a href="{{ path('list') }}">Lister les produits</a></li>
-            <li><a href="{{ path('cart') }}">Gérer le panier</a></li>
+            {% if 'ROLE_USER' in app.user.roles %}
+                <li><a href="{{ path('product_list') }}">Lister les produits</a></li>
+                <li><a href="{{ path('user_cart') }}">Gérer le panier</a></li>
+            {% endif %}
             {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li><a href="{{ path('user_gestion_clients') }}">Gérer les clients</a></li>
-                <li><a href="{{ path('booster') }}">Créer un produit</a></li>
+                <li><a href="{{ path('admin_gestion_clients') }}">Gérer les clients</a></li>
+                <li><a href="{{ path('product_add_booster') }}">Créer un produit</a></li>
                 <li><a href="https://fr.wikipedia.org/wiki/Pong">Lien vers site extérieur</a></li>
             {% endif %}
             {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
-                <li><a href="{{ path('edit_admin') }}">Gérer les administrateurs</a></li>
+                <li><a href="{{ path('sadmin_edit_admin') }}">Gérer les administrateurs</a></li>
             {% endif %}
             <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>
         {% else %}
