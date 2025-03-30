@@ -9,9 +9,7 @@
 
     {{ form_start(editForm) }}
         {{ form_row(editForm.login) }}
-        {{ form_row(editForm.plainPassword, {
-            label: 'Password'
-        }) }}
+        {{ form_row(editForm.plainPassword) }}
         {{ form_row(editForm.name) }}
         {{ form_row(editForm.surname) }}
         {{ form_row(editForm.country) }}

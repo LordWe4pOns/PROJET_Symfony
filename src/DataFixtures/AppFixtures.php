@@ -252,13 +252,13 @@ class AppFixtures extends Fixture
 
         $expansion1 = new expansion();
         $expansion1
-            ->setName("écarlate et violet")
+            ->setName("Écarlate et Violet")
             ->setNumber(9);
         $manager->persist($expansion1);
 
         $expansion2 = new expansion();
         $expansion2
-            ->setName("épée et bouclier")
+            ->setName("Épée et Bouclier")
             ->setNumber(8);
         $manager->persist($expansion2);
 
@@ -266,7 +266,7 @@ class AppFixtures extends Fixture
         $booster1
             ->setExpansion($expansion1)
             ->setCountry($country1)
-            ->setName("évolutions à Paldea")
+            ->setName("Évolutions à Paldea")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster1);
@@ -275,7 +275,7 @@ class AppFixtures extends Fixture
         $booster2
             ->setExpansion($expansion1)
             ->setCountry($country1)
-            ->setName("flammes obsidiennes")
+            ->setName("Flammes obsidiennes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster2);
@@ -284,7 +284,7 @@ class AppFixtures extends Fixture
         $booster3
             ->setExpansion($expansion1)
             ->setCountry($country1)
-            ->setName("faille paradoxe")
+            ->setName("Faille paradoxe")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster3);
@@ -293,7 +293,7 @@ class AppFixtures extends Fixture
         $booster4
             ->setExpansion($expansion1)
             ->setCountry($country1)
-            ->setName("étincelles déferlantes")
+            ->setName("Étincelles déferlantes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster4);
@@ -302,7 +302,7 @@ class AppFixtures extends Fixture
         $booster5
             ->setExpansion($expansion2)
             ->setCountry($country1)
-            ->setName("clash des rebelles")
+            ->setName("Clash des rebelles")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster5);
@@ -311,7 +311,7 @@ class AppFixtures extends Fixture
         $booster6
             ->setExpansion($expansion2)
             ->setCountry($country1)
-            ->setName("règne de glace")
+            ->setName("Règne de glace")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster6);
@@ -320,7 +320,7 @@ class AppFixtures extends Fixture
         $booster7
             ->setExpansion($expansion2)
             ->setCountry($country1)
-            ->setName("stars étincelantes")
+            ->setName("Stars étincelantes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster7);
@@ -329,7 +329,7 @@ class AppFixtures extends Fixture
         $booster8
             ->setExpansion($expansion2)
             ->setCountry($country1)
-            ->setName("origine perdue")
+            ->setName("Origine perdue")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster8);

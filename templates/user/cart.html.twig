@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Votre Panier</h1>
 
-    {% if cart is empty %}
+    {% if cart.cartContents is empty %}
         <p>Votre panier est vide.</p>
     {% else %}
         <table>
@@ -15,13 +15,13 @@
                 <th>Total</th>
                 <th>Action</th>
             </tr>
-            {% for cart in cart %}
+            {% for content in cart.cartContents %}
                 <tr>
-                    <td>{{ cart.booster.nom }}</td>
-                    <td>{{ cart.quantite }}</td>
-                    <td>{{ cart.booster.prix * cart.quantite }}€</td>
+                    <td>{{ content.booster.name }}</td>
+                    <td>{{ content.quantity }}</td>
+                    <td>{{ content.booster.price * content.quantity }}€</td>
                     <td>
-                        <a href="###">Supprimer</a>
+                        <a href="{{ path('user_cart_delete', {id: content.id}) }}">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -29,7 +29,7 @@
 
         <h2>Total : {{ totalPrice }}€</h2>
 
-        <a href="#" class="button">Commander</a>
-        <a href="##" class="button button-red">Vider le panier</a>
+        <a href="{{ path('user_cart_order') }}" class="button">Commander</a>
+        <a href="{{ path('user_cart_clear') }}" class="button button-red">Vider le panier</a>
     {% endif %}
 {% endblock %}

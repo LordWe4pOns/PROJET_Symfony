@@ -16,19 +16,19 @@
         </tr>
         </thead>
         <tbody>
-        {% for boosters in boosters %}
+        {% for booster in boosters %}
             <tr>
-                <td>{{ boosters.name }}</td>
-                <td>{{ boosters.price }} €</td>
-                <td>{{ boosters.stock }}</td>
-                <td>{{ boosters.expansionName }}</td>
+                <td>{{ booster.name }}</td>
+                <td>{{ booster.price }} €</td>
+                <td>{{ booster.stock }}</td>
+                <td>{{ booster.expansionName }}</td>
                 <td>
-                    <form action="{{ path('user_cart_add', { 'id': boosters.id }) }}" method="post">
-                        <input type="hidden" name="boosters_id" value="{{ boosters.id }}">
+                    <form action="{{ path('user_cart_add', { 'id': booster.id }) }}" method="post">
+                        <input type="hidden" name="boosters_id" value="{{ booster.id }}">
 
-                        <label for="quantite_{{ boosters.id }}">Quantité :</label>
-                        <select name="quantite" id="quantite_{{ boosters.id }}">
-                            {% for i in range(1, boosters.stock) %}
+                        <label for="quantite_{{ booster.id }}">Quantité :</label>
+                        <select name="quantite" id="quantite_{{ booster.id }}">
+                            {% for i in range(minQuantities.(booster.id), booster.stock) %}
                                 <option value="{{ i }}">{{ i }}</option>
                             {% endfor %}
                         </select>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditAdminFormType;
+use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/sadmin', name: 'sadmin')]
 final class SuperAdminController extends AbstractController
 {
-    #[Route('/edit/Admin', name: '_edit_admin')]
+    #[Route('/edit/admin', name: '_edit_admin')]
     public function editAdminAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(EditAdminFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -36,7 +37,7 @@ final class SuperAdminController extends AbstractController
         }
 
         return $this->render('registration/add_admin.html.twig', [
-        'AdminForm' => $form,
+        'adminForm' => $form,
         ]);
     }
 }

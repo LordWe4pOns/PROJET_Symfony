@@ -49,14 +49,6 @@ class Cart
     }
 
     /**
-     * @return Collection<int, Booster>
-     */
-    public function getContent(): Collection
-    {
-        return $this->content;
-    }
-
-    /**
      * @return Collection<int, CartContent>
      */
     public function getCartContents(): Collection

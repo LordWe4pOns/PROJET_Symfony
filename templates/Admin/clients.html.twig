@@ -23,7 +23,8 @@
                 <td>{{ client.password }}</td>
                 <td>{{ client.name }}</td>
                 <td>{{ client.surname }}</td>
-                <td>{{ client.birthday |date('d/m/Y') }}</td>
+                {% set bday = client.birthday ? client.birthday |date('d/m/Y') : 'Non renseigné' %}
+                <td>{{ bday }}</td>
                 <td>
                     {% for role in client.roles %}
                         [{{ role }}]

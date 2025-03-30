@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Booster;
 use App\Entity\Cart;
+use App\Entity\CartContent;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,47 +48,103 @@ final class UserController extends AbstractController
     #[Route('/cart', name: '_cart')]
     public function cartAction(EntityManagerInterface $manager): Response
     {
-        // Récupération du panier de l'utilisateur connect
         $user = $this->getUser();
-        $cart = $user->getCart() ?? [];
+        $cart = $user->getCart();
+        $cartContents = $cart->getCartContents()->getValues();
         $totalPrice = 0;
 
-        foreach ($cart as $booster) {
-            $totalPrice += $booster->getQuantity() * $booster->getBooster()->getPrice();
+        foreach ($cartContents as $content) {
+            $totalPrice += $content->getQuantity() * $content->getBooster()->getPrice();
         }
+
         return $this->render('user/cart.html.twig', [
             'cart' => $cart,
             'totalPrice' => $totalPrice
         ]);
     }
 
-    #[Route('/cart/add/{id}', name: '_cart_add', methods: ['POST'])]
+    #[Route('/cart/delete/{id}', name: '_cart_delete', requirements: ['id' => '[1-9]\d*'])]
+    public function deleteFromCart(EntityManagerInterface $manager, int $id): Response
+    {
+        $cartContent = $manager->getRepository(CartContent::class)->find($id);
+        if ($this->getUser() !== $cartContent->getCart()->getUser())
+            return $this->redirectToRoute('cart');
+        $quantity = $cartContent->getQuantity();
+        $booster = $cartContent->getBooster();
+        $booster->setStock($booster->getStock() + $quantity);
+        $manager->remove($cartContent);
+        $manager->flush();
+
+        return $this->redirectToRoute('user_cart');
+    }
+
+    #[Route('/cart/add/{id}', name: '_cart_add', requirements: ['id' => '[1-9]\d*'])]
     public function addToCartAction(int $id, Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
 
         $booster = $manager->getRepository(Booster::class)->find($id);
-        if (!$booster) {
+        if (is_null($booster)) {
             throw $this->createNotFoundException("Ce produit n'existe pas.");
         }
 
         $cart = $user->getCart();
-        if (!$cart) {
-            $cart = new Cart();
-            $cart->setUser($user);
-            $manager->persist($cart);
+
+        $quantity = $request->request->get('quantite');
+
+        $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
+        if (!is_null($cartContent)) {
+            $cartContent->setQuantity($cartContent->getQuantity() + $quantity);
+            if ($cartContent->getQuantity() <= 0)
+                $cart->removeCartContent($cartContent);
+        } else {
+            $content = new CartContent();
+            $content
+                ->setBooster($booster)
+                ->setQuantity($quantity)
+                ->setCart($cart);
+            $manager->persist($content);
+            $cart->addCartContent($content);
         }
 
-        // Récupère la quantité envoyée par le formulaire
-        $quantity = (int) $request->request->get('quantite', 1);
-
-        $cart->addContent($booster, $quantity);
-        $manager->persist($cart);
+        $booster->setStock($booster->getStock() - $quantity);
         $manager->flush();
 
-        return $this->redirectToRoute('cart');
+        return $this->redirectToRoute('user_cart');
+    }
+
+    #[Route('/cart/clear', name: '_cart_clear')]
+    public function cartClearAction(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $cart = $user->getCart();
+        $cartContents = $cart->getCartContents()->getValues();
+
+        foreach ($cartContents as $cartContent) {
+            $quantity = $cartContent->getQuantity();
+            $booster = $cartContent->getBooster();
+            $booster->setStock($booster->getStock() + $quantity);
+            $cart->removeCartContent($cartContent);
+        }
+
+        $manager->flush();
+
+        return $this->redirectToRoute('user_cart');
+    }
+
+    #[Route('/cart/order', name: '_cart_order')]
+    public function cartOrderAction(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $cart = $user->getCart();
+        $cartContents = $cart->getCartContents()->getValues();
+
+        foreach ($cartContents as $cartContent) {
+            $cart->removeCartContent($cartContent);
+        }
+
+        $manager->flush();
+
+        return $this->redirectToRoute('user_cart');
     }
 }
