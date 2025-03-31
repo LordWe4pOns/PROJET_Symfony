@@ -28,9 +28,16 @@ class Country
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'country')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, BoosterCountry>
+     */
+    #[ORM\OneToMany(targetEntity: BoosterCountry::class, mappedBy: 'country', orphanRemoval: true)]
+    private Collection $countryBoosters;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->countryBoosters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,6 +93,36 @@ class Country
             // set the owning side to null (unless already changed)
             if ($user->getCountry() === $this) {
                 $user->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BoosterCountry>
+     */
+    public function getCountryBoosters(): Collection
+    {
+        return $this->countryBoosters;
+    }
+
+    public function addCountryBooster(BoosterCountry $countryBooster): static
+    {
+        if (!$this->countryBoosters->contains($countryBooster)) {
+            $this->countryBoosters->add($countryBooster);
+            $countryBooster->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountryBooster(BoosterCountry $countryBooster): static
+    {
+        if ($this->countryBoosters->removeElement($countryBooster)) {
+            // set the owning side to null (unless already changed)
+            if ($countryBooster->getCountry() === $this) {
+                $countryBooster->setCountry(null);
             }
         }
 

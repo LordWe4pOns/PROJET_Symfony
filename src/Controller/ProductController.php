@@ -50,7 +50,7 @@ final class ProductController extends AbstractController
             $entityManager->persist($booster);
             $entityManager->flush();
 
-            return $this->redirectToRoute('list');
+            return $this->redirectToRoute('product_list');
         }
 
         return $this->render('Product/booster.html.twig', [

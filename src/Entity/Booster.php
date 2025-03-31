@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BoosterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,9 +32,16 @@ class Booster
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    /**
+     * @var Collection<int, BoosterCountry>
+     */
+    #[ORM\OneToMany(targetEntity: BoosterCountry::class, mappedBy: 'booster', orphanRemoval: true)]
+    private Collection $boosterCountries;
+
+    public function __construct()
+    {
+        $this->boosterCountries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,14 +101,32 @@ class Booster
         return $this;
     }
 
-    public function getCountry(): ?Country
+    /**
+     * @return Collection<int, BoosterCountry>
+     */
+    public function getBoosterCountries(): Collection
     {
-        return $this->country;
+        return $this->boosterCountries;
     }
 
-    public function setCountry(?Country $country): static
+    public function addBoosterCountry(BoosterCountry $boosterCountry): static
     {
-        $this->country = $country;
+        if (!$this->boosterCountries->contains($boosterCountry)) {
+            $this->boosterCountries->add($boosterCountry);
+            $boosterCountry->setBooster($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoosterCountry(BoosterCountry $boosterCountry): static
+    {
+        if ($this->boosterCountries->removeElement($boosterCountry)) {
+            // set the owning side to null (unless already changed)
+            if ($boosterCountry->getBooster() === $this) {
+                $boosterCountry->setBooster(null);
+            }
+        }
 
         return $this;
     }

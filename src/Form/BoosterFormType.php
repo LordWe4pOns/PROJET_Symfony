@@ -31,11 +31,6 @@ class BoosterFormType extends AbstractType
                 'class' => Expansion::class,
                 'choice_label' => 'name',
             ])
-            ->add('country', EntityType::class, [
-                'label' => 'Pays',
-                'class' => Country::class,
-                'choice_label' => 'name',
-            ])
         ;
     }
 
