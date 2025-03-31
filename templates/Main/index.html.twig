@@ -4,10 +4,9 @@
 {% block title %}Accueil{% endblock %}
 
 {% block vue %}
-    {% set fullname = app.user ? app.user.name ~ ' ' ~ app.user.surname : 'Client Anonyme' %}
-    {% set country = app.user.country ? app.user.country.name : 'contrées inconnues' %}
     <h1>Bienvenue sur CardsShop, {{ fullname }} de {{ country }} !</h1>
     <br/>
+    <p>Vous avez le role : {{ role }}</p>
     <br/>
     <p>Vous êtes sur le meilleur site de boosters pokemon !</p>
     <br/>

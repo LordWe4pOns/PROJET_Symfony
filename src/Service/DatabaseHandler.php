@@ -26,4 +26,26 @@ class DatabaseHandler
 
         return $total;
     }
+
+    public function getMainRole(int $id): string
+    {
+        $user = $this->em->getRepository(User::class)->find($id);
+        $roles = $user ? $user->getRoles() : ['ROLE_ANONYMOUS'];
+
+        $roleHierarchy = [
+            'ROLE_SUPER_ADMIN' => 'Super Administrateur',
+            'ROLE_ADMIN' => 'Administrateur',
+            'ROLE_USER' => 'Client',
+            'ROLE_ANONYMOUS' => 'Anonyme',
+        ];
+
+        $mainRole = 'Anonyme';
+        foreach ($roleHierarchy as $role => $name) {
+            if (in_array($role, $roles)) {
+                $mainRole = $name;
+                break;
+            }
+        }
+        return $mainRole;
+    }
 }

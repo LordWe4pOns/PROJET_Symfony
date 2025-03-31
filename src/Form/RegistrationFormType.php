@@ -55,6 +55,8 @@ class RegistrationFormType extends AbstractType
                     },
                     'placeholder' => 'Select a country',
                     'expanded' => false,
+                    'required' => false,
+                    'empty_data' => null,
                 ]
             )
             ->add('birthday',

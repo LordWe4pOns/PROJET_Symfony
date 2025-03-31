@@ -11,9 +11,27 @@ use Symfony\Component\Routing\Attribute\Route;
 final class MainController extends AbstractController
 {
     #[Route('/', name: 'main')]
-    public function indexAction(): Response
+    public function indexAction(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('Main/index.html.twig');
+        $user = $this->getUser();
+        $id = -1;
+        $fullname = 'Client anonyme';
+        $country = 'contrées inconnues';
+
+        if ($user){
+            $id = $user->getId();
+            $fullname = $user->getName() . ' ' . $user->getSurname();
+            $country = $user->getCountry() ? $user->getCountry()->getName() : 'contrées inconnues';
+        }
+
+        $handler = new DatabaseHandler($entityManager);
+        $role = $handler->getMainRole($id);
+
+        return $this->render('Main/index.html.twig', [
+            'fullname' => $fullname,
+            'country' => $country,
+            'role' => $role,
+        ]);
     }
 
     public function menuAction(EntityManagerInterface $entityManager): Response

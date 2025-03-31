@@ -22,7 +22,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\Unique(message:"Cet identifiant existe déjà.")]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $login = null;
 
@@ -37,7 +36,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
 
     #[Assert\Length(min: 3, max: 30, minMessage: "Le mot de passe doit contenir au moins 3 caractères.", maxMessage: "Le mot de passe ne peut pas dépasser 30 caractères.")]
-    #[Assert\NotEqualTo(propertyPath: "username", message: "Le mot de passe doit être différent de l'identifiant.")]
     #[ORM\Column]
     private ?string $password = null;
 
@@ -51,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Country $country = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
