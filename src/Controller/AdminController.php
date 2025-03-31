@@ -32,7 +32,7 @@ final class AdminController extends AbstractController
             $cart = $user->getCart();
             if (!is_null($cart))
             {
-                $content = $cart->getContent()->getValues();
+                $content = $cart->getCartContents()->getValues();
                 for ($i = 0; $i < count($content); $i++)
                 {
                     $content[$i]->setStock($content[$i]->getStock() + 1);
