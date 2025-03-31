@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Booster;
-use App\Entity\Cart;
 use App\Entity\CartContent;
-use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +44,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/cart', name: '_cart')]
-    public function cartAction(EntityManagerInterface $manager): Response
+    public function cartAction(): Response
     {
         $user = $this->getUser();
         $cart = $user->getCart();
