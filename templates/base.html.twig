@@ -27,7 +27,7 @@
             <li><a href="{{ path('main') }}">Accueil</a></li>
             <li><a href="{{ path('user_profile') }}">Gérer le profil</a></li>
             {% if is_granted('ROLE_USER') %}
-                <li><a href="{{ path('product_list') }}">Lister les produits</a></li>
+                <li><a href="{{ path('product_list') }}">Liste des produits</a></li>
                 <li><a href="{{ path('user_cart') }}">Gérer le panier</a></li>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}

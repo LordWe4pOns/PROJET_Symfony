@@ -29,7 +29,9 @@
                         <label for="quantite_{{ booster.id }}">Quantité :</label>
                         <select name="quantite" id="quantite_{{ booster.id }}">
                             {% for i in range(minQuantities.(booster.id), booster.stock) %}
+                                {% if i is not same as(0) %}
                                 <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
 
