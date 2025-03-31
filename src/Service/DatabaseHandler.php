@@ -19,6 +19,11 @@ class DatabaseHandler
         $user = $this->em->getRepository(User::class)->find($id);
         $cart = $user->getCart();
         $content = $cart->getCartContents()->getValues();
-        return count($content);
+        $total = 0;
+        foreach ($content as $item) {
+            $total += $item->getQuantity();
+        }
+
+        return $total;
     }
 }
