@@ -3,6 +3,11 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('CSS/Vue.css') }}"/>
+{% endblock %}
+
 {% block vue %}
     <h1>Bienvenue sur CardsShop, {{ fullname }} de {{ country }} !</h1>
     <br/>
