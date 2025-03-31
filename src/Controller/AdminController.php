@@ -39,11 +39,15 @@ final class AdminController extends AbstractController
             $cart = $user->getCart();
             if (!is_null($cart))
             {
-                $content = $cart->getCartContents()->getValues();
-                for ($i = 0; $i < count($content); $i++)
-                {
-                    $content[$i]->setStock($content[$i]->getStock() + 1);
+                $cartContents = $cart->getCartContents()->getValues();
+
+                foreach ($cartContents as $cartContent) {
+                    $quantity = $cartContent->getQuantity();
+                    $booster = $cartContent->getBooster();
+                    $booster->setStock($booster->getStock() + $quantity);
+                    $cart->removeCartContent($cartContent);
                 }
+                
                 $entityManager->remove($cart);
             }
             $entityManager->remove($user);
