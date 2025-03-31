@@ -1,9 +1,8 @@
-{# niveau 3 #}
-{% extends 'Layouts/layout_vente.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Se connecter{% endblock %}
 
-{% block vue %}
+{% block body %}
     <form method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

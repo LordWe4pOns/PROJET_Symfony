@@ -9,4 +9,3 @@
 /vendor/
 /.idea/
 ###< symfony/framework-bundle ###
-bd_commerce/cardsShop.db

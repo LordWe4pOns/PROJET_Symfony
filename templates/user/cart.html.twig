@@ -1,9 +1,8 @@
-{# niveau 3 #}
-{% extends 'Layouts/layout_vente.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Votre Panier{% endblock %}
 
-{% block vue %}
+{% block body %}
     <h1>Votre Panier</h1>
 
     {% if cart.cartContents is empty %}
