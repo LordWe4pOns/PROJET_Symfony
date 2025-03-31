@@ -83,35 +83,34 @@ final class UserController extends AbstractController
 
         $quantity = $request->request->get('quantite');
 
-        if ($quantity == 0)
-            return $this->redirectToRoute('product_list');
+        if ($quantity != 0) {
+            $booster = $manager->getRepository(Booster::class)->find($id);
+            if (is_null($booster)) {
+                throw $this->createNotFoundException("Ce produit n'existe pas.");
+            }
 
-        $booster = $manager->getRepository(Booster::class)->find($id);
-        if (is_null($booster)) {
-            throw $this->createNotFoundException("Ce produit n'existe pas.");
+            $cart = $user->getCart();
+
+            $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
+            if (!is_null($cartContent)) {
+                $cartContent->setQuantity($cartContent->getQuantity() + $quantity);
+                if ($cartContent->getQuantity() <= 0)
+                    $cart->removeCartContent($cartContent);
+            } else {
+                $content = new CartContent();
+                $content
+                    ->setBooster($booster)
+                    ->setQuantity($quantity)
+                    ->setCart($cart);
+                $manager->persist($content);
+                $cart->addCartContent($content);
+            }
+
+            $booster->setStock($booster->getStock() - $quantity);
+            $manager->flush();
         }
 
-        $cart = $user->getCart();
-
-        $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
-        if (!is_null($cartContent)) {
-            $cartContent->setQuantity($cartContent->getQuantity() + $quantity);
-            if ($cartContent->getQuantity() <= 0)
-                $cart->removeCartContent($cartContent);
-        } else {
-            $content = new CartContent();
-            $content
-                ->setBooster($booster)
-                ->setQuantity($quantity)
-                ->setCart($cart);
-            $manager->persist($content);
-            $cart->addCartContent($content);
-        }
-
-        $booster->setStock($booster->getStock() - $quantity);
-        $manager->flush();
-
-        return $this->redirectToRoute('user_cart');
+        return $this->redirectToRoute('product_list');
     }
 
     #[Route('/cart/clear', name: '_cart_clear')]
