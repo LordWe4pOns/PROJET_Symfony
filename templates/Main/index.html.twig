@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
+{% block vue %}
     {% set fullname = app.user ? app.user.name ~ ' ' ~ app.user.surname : 'Client Anonyme' %}
     <h1>Bienvenue sur CardsShop, {{ fullname }} !</h1>
     <br/>

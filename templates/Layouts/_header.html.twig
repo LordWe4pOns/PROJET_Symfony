@@ -1,0 +1,12 @@
+{# bandeau supérieur #}
+<header>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <img src="{{ asset('Pictures/bandeau_haut_sadmin.png') }}" alt="Bandeau Super-admin">
+    {% elseif is_granted('ROLE_ADMIN') %}
+        <img src="{{ asset('Pictures/bandeau_haut_admin.png') }}" alt="Bandeau Admin">
+    {% elseif is_granted('ROLE_USER') %}
+        <img src="{{ asset('Pictures/bandeau_haut_user.png') }}" alt="Bandeau Utilisateur">
+    {% else %}
+        <img src="{{ asset('Pictures/bandeau_haut_visiteur.png') }}" alt="Bandeau Visiteur">
+    {% endif %}
+</header>
