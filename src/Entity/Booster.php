@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BoosterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'l3_booster')]
 #[ORM\Entity(repositoryClass: BoosterRepository::class)]
@@ -21,9 +22,11 @@ class Booster
     #[ORM\JoinColumn(nullable: false)]
     private ?Expansion $expansion = null;
 
+    #[Assert\Positive(message: "Le prix doit être positif.")]
     #[ORM\Column]
     private ?float $price = null;
 
+    #[Assert\Positive(message: "La quantité en stock doit être positive.")]
     #[ORM\Column]
     private ?int $stock = null;
 
