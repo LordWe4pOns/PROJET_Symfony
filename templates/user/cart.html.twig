@@ -21,7 +21,7 @@
                     <td>{{ content.quantity }}</td>
                     <td>{{ content.booster.price * content.quantity }}€</td>
                     <td>
-                        <a href="{{ path('user_cart_delete', {id: content.id}) }}">Supprimer</a>
+                        <button onclick="window.location.href='{{ path('user_cart_delete', {id: content.id}) }}'">Supprimer</button>
                     </td>
                 </tr>
             {% endfor %}
