@@ -6,15 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Table(name: 'l3_user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_LOGIN', fields: ['login'])]
-#[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
-#[UniqueEntity(fields: ['name', 'surname'], message: 'This person already exists in the system')]
+#[UniqueEntity(fields: ['login'], message: 'Cet identifiant est déjà utilisé')]
+#[UniqueEntity(fields: ['name', 'surname'], message: 'Cette personne existe déjà')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -35,7 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
 
-    #[Assert\Length(min: 3, max: 30, minMessage: "Le mot de passe doit contenir au moins 3 caractères.", maxMessage: "Le mot de passe ne peut pas dépasser 30 caractères.")]
     #[ORM\Column]
     private ?string $password = null;
 

@@ -34,7 +34,7 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('list');
+            return $this->redirectToRoute('product_list');
         }
 
         return $this->render('user/edit_user.html.twig', [

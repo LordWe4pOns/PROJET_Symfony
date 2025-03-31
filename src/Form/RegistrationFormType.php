@@ -13,6 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
@@ -75,6 +77,18 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'constraints' => new Assert\Callback([$this, 'validateDiffLoginPassword']),
         ]);
+    }
+
+
+    public function validateDiffLoginPassword(User $user, ExecutionContextInterface $context): void
+    {
+        if ($user->getLogin() === $context->getRoot()->get('plainPassword')->getData()) {
+            $context
+                ->buildViolation('Le login et le mot de passe doivent être différents')
+                ->atPath('plainPassword')
+                ->addViolation();
+        }
     }
 }

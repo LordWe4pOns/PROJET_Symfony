@@ -26,11 +26,7 @@
                 <td>{{ client.surname }}</td>
                 {% set bday = client.birthday ? client.birthday |date('d/m/Y') : 'Non renseigné' %}
                 <td>{{ bday }}</td>
-                <td>
-                    {% for role in client.roles %}
-                        [{{ role }}]
-                    {% endfor %}
-                </td>
+                <td>{{ client.mainRole }}</td>
                 <td>
                     {% if client.country %}
                         {{ client.country.name }} ({{ client.country.code }})

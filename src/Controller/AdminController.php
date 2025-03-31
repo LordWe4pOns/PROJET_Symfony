@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\DatabaseHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,12 @@ final class AdminController extends AbstractController
     public function gestionClientsAction(EntityManagerInterface $entityManager): Response
     {
         $clients = $entityManager->getRepository(User::class)->findAll();
+
+        $handler = new DatabaseHandler($entityManager);
+
+        foreach ($clients as $client) {
+            $client->mainRole = $handler->getMainRole($client->getId());
+        }
 
         return $this->render('Admin/clients.html.twig', ['clients' => $clients]);
     }
