@@ -81,14 +81,17 @@ final class UserController extends AbstractController
     {
         $user = $this->getUser();
 
+        $quantity = $request->request->get('quantite');
+
+        if ($quantity == 0)
+            return $this->redirectToRoute('product_list');
+
         $booster = $manager->getRepository(Booster::class)->find($id);
         if (is_null($booster)) {
             throw $this->createNotFoundException("Ce produit n'existe pas.");
         }
 
         $cart = $user->getCart();
-
-        $quantity = $request->request->get('quantite');
 
         $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
         if (!is_null($cartContent)) {
