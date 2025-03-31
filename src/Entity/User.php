@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'l3_user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -52,6 +54,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
+
+    #[Assert\Callback]
+    public function validateDiffLoginPassword(ExecutionContextInterface $context): void
+    {
+        if ($this->login === $this->password) {
+            $context
+                ->buildViolation('Le login et le mot de passe doivent être différents')
+                ->atPath('password')
+                ->addViolation();
+        }
+    }
+
+    #[Assert\Callback]
+    public function validatePasswordLength(ExecutionContextInterface $context): void
+    {
+        if (strlen($this->password) > 30 || strlen($this->password) < 3) {
+            $context
+                ->buildViolation('Le mot de passe doit faire entre 3 et 30 caractères')
+                ->atPath('password')
+                ->addViolation();
+        }
+    }
 
     public function getId(): ?int
     {

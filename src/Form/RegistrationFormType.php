@@ -24,20 +24,11 @@ class RegistrationFormType extends AbstractType
             ->add('login', TextType::class, [
                 'label' => 'Identifiant',
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('password', PasswordType::class, [
                 'label' => "Mot de passe",
-                'mapped' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrez un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Le mot de passe doit faire au moins {{ limit }} caractères',
-                        'max' => 30,
-                        'maxMessage' => 'Le mot de passe doit faire au plus {{ limit }} caractères'
                     ]),
                 ],
             ])
@@ -77,18 +68,6 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'constraints' => new Assert\Callback([$this, 'validateDiffLoginPassword']),
         ]);
-    }
-
-
-    public function validateDiffLoginPassword(User $user, ExecutionContextInterface $context): void
-    {
-        if ($user->getLogin() === $context->getRoot()->get('plainPassword')->getData()) {
-            $context
-                ->buildViolation('Le login et le mot de passe doivent être différents')
-                ->atPath('plainPassword')
-                ->addViolation();
-        }
     }
 }
