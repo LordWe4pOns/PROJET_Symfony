@@ -42,7 +42,6 @@ security:
         - { path: ^/security, roles: PUBLIC_ACCESS }
         - { path: /profile$, roles: IS_AUTHENTICATED_FULLY}
         - { path: ^/user, roles: ROLE_USER }
-        - { path: ^/product/add, roles: ROLE_ADMIN }
         - { path: ^/product, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/sadmin, roles: ROLE_SUPER_ADMIN }

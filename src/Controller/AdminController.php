@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Booster;
 use App\Entity\User;
+use App\Form\BoosterFormType;
 use App\Service\DatabaseHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -54,5 +57,24 @@ final class AdminController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('admin_gestion_clients');
+    }
+
+    #[Route('/add/booster', name: '_add_booster')]
+    public function boosterAction(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $booster = new Booster();
+        $form = $this->createForm(BoosterFormType::class, $booster);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($booster);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('main');
+        }
+
+        return $this->render('Product/booster.html.twig', [
+            'BoosterForm' => $form,
+        ]);
     }
 }
