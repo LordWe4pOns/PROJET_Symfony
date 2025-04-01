@@ -19,6 +19,7 @@ final class UserController extends AbstractController
     public function profileAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $role = $user->getRoles();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -34,7 +35,14 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('product_list');
+            if($user->getRoles() === ['ROLE_SUPER_ADMIN']) {
+                $this->addFlash('success', '✨Vos changements ont bien été pris en compte, super administrateur✨');
+                return $this->redirectToRoute('main');
+            }
+            else {
+                $this->addFlash('success', '✨Vos changements ont bien été pris en compte✨');
+                return $this->redirectToRoute('product_list');
+            }
         }
 
         return $this->render('user/edit_user.html.twig', [

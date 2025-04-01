@@ -69,6 +69,7 @@ final class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($booster);
             $entityManager->flush();
+            $this->addFlash('success', '🎁Nouveau produit ajouté avec succes🎁');
 
             return $this->redirectToRoute('main');
         }

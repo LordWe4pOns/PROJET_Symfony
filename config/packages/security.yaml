@@ -24,6 +24,7 @@ security:
                 path: security_logout
                 # where to redirect after logout
                 target: main
+                invalidate_session: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
