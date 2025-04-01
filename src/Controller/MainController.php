@@ -44,4 +44,11 @@ final class MainController extends AbstractController
 
         return $this->render('Layouts/_menu.html.twig', ['amount' => $amount]);
     }
+
+    public function flashMessages(EntityManagerInterface $entityManager): Response
+    {
+        $this->addFlash('success', 'Vous avez bien été déconnecté.');
+
+        return $this->render('Layouts/_flash.html.twig');
+    }
 }
