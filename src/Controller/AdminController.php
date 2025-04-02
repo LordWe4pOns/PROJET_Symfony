@@ -44,4 +44,28 @@ final class AdminController extends AbstractController
         }
         return $this->redirectToRoute('admin_gestion_clients');
     }
+<<<<<<< Updated upstream
+=======
+
+    #[Route('/add/booster', name: '_add_booster')]
+    public function boosterAction(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $booster = new Booster();
+        $form = $this->createForm(BoosterFormType::class, $booster);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($booster);
+            $entityManager->flush();
+
+            $this->addFlash('info', 'Le nouveau booster à été créé !');
+
+            return $this->redirectToRoute('main');
+        }
+
+        return $this->render('Product/booster.html.twig', [
+            'BoosterForm' => $form,
+        ]);
+    }
+>>>>>>> Stashed changes
 }

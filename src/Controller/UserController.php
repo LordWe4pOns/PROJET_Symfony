@@ -36,7 +36,13 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+<<<<<<< Updated upstream
             return $this->redirectToRoute('list');
+=======
+            $this->addFlash('info', 'Votre profil à bien été modifié !');
+
+            return $this->redirectToRoute('product_list');
+>>>>>>> Stashed changes
         }
 
         return $this->render('user/edit_user.html.twig', [

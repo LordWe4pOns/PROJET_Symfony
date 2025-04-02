@@ -30,4 +30,11 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route(path: '/logout/message', name: '_logout_message')]
+    public function logoutMessage()
+    {
+        $this->addFlash('info', 'Vous avez été déconnecté');
+        return $this->redirectToRoute('main');
+    }
 }
