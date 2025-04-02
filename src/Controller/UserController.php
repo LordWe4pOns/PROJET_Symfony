@@ -19,7 +19,6 @@ final class UserController extends AbstractController
     public function profileAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $role = $user->getRoles();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -35,7 +34,7 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            if($user->getRoles() === ['ROLE_SUPER_ADMIN']) {
+            if($this->isGranted('ROLE_SUPER_ADMIN')) {
                 $this->addFlash('success', '✨Vos changements ont bien été pris en compte, super administrateur✨');
                 return $this->redirectToRoute('main');
             }

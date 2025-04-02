@@ -15,10 +15,6 @@ final class MainController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (!$user) {
-            $this->addFlash('success', 'Vous avez été déconnecté avec succès.');
-        }
-
         $id = -1;
         $fullname = 'Client anonyme';
         $country = 'contrées inconnues';

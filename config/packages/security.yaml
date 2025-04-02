@@ -23,7 +23,7 @@ security:
             logout:
                 path: security_logout
                 # where to redirect after logout
-                target: main
+                target: security_logout_message
                 invalidate_session: true
 
             # activate different ways to authenticate
