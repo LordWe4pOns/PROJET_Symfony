@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Booster;
 use App\Entity\User;
+use App\Form\BoosterFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -44,8 +47,6 @@ final class AdminController extends AbstractController
         }
         return $this->redirectToRoute('admin_gestion_clients');
     }
-<<<<<<< Updated upstream
-=======
 
     #[Route('/add/booster', name: '_add_booster')]
     public function boosterAction(Request $request, EntityManagerInterface $entityManager): Response
@@ -67,5 +68,4 @@ final class AdminController extends AbstractController
             'BoosterForm' => $form,
         ]);
     }
->>>>>>> Stashed changes
 }
