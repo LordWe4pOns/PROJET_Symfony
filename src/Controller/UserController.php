@@ -72,6 +72,9 @@ final class UserController extends AbstractController
     public function deleteFromCart(EntityManagerInterface $manager, int $id): Response
     {
         $cartContent = $manager->getRepository(CartContent::class)->find($id);
+        if (!$cartContent) {
+            throw $this->createNotFoundException('Votre panier est vide');
+        }
         if ($this->getUser() !== $cartContent->getCart()->getUser())
             return $this->redirectToRoute('cart');
         $quantity = $cartContent->getQuantity();
