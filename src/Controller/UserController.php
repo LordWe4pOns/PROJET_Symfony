@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Booster;
-use App\Entity\Cart;
 use App\Entity\CartContent;
-use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +19,7 @@ final class UserController extends AbstractController
     public function profileAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $role = $user->getRoles();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -29,16 +28,21 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $plainPassword = $form->get('plainPassword')->getData();
+            $plainPassword = $user->getPassword();
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('info', 'Votre profil à bien été modifié !');
-
-            return $this->redirectToRoute('product_list');
+            if($user->getRoles() === ['ROLE_SUPER_ADMIN']) {
+                $this->addFlash('success', '✨Vos changements ont bien été pris en compte, super administrateur✨');
+                return $this->redirectToRoute('main');
+            }
+            else {
+                $this->addFlash('success', '✨Vos changements ont bien été pris en compte✨');
+                return $this->redirectToRoute('product_list');
+            }
         }
 
         return $this->render('user/edit_user.html.twig', [
@@ -48,7 +52,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/cart', name: '_cart')]
-    public function cartAction(EntityManagerInterface $manager): Response
+    public function cartAction(): Response
     {
         $user = $this->getUser();
         $cart = $user->getCart();
@@ -85,34 +89,36 @@ final class UserController extends AbstractController
     {
         $user = $this->getUser();
 
-        $booster = $manager->getRepository(Booster::class)->find($id);
-        if (is_null($booster)) {
-            throw $this->createNotFoundException("Ce produit n'existe pas.");
-        }
-
-        $cart = $user->getCart();
-
         $quantity = $request->request->get('quantite');
 
-        $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
-        if (!is_null($cartContent)) {
-            $cartContent->setQuantity($cartContent->getQuantity() + $quantity);
-            if ($cartContent->getQuantity() <= 0)
-                $cart->removeCartContent($cartContent);
-        } else {
-            $content = new CartContent();
-            $content
-                ->setBooster($booster)
-                ->setQuantity($quantity)
-                ->setCart($cart);
-            $manager->persist($content);
-            $cart->addCartContent($content);
+        if ($quantity != 0) {
+            $booster = $manager->getRepository(Booster::class)->find($id);
+            if (is_null($booster)) {
+                throw $this->createNotFoundException("Ce produit n'existe pas.");
+            }
+
+            $cart = $user->getCart();
+
+            $cartContent = $manager->getRepository(CartContent::class)->findOneBy(['booster' => $booster->getId(), 'cart' => $cart->getId()]);
+            if (!is_null($cartContent)) {
+                $cartContent->setQuantity($cartContent->getQuantity() + $quantity);
+                if ($cartContent->getQuantity() <= 0)
+                    $cart->removeCartContent($cartContent);
+            } else {
+                $content = new CartContent();
+                $content
+                    ->setBooster($booster)
+                    ->setQuantity($quantity)
+                    ->setCart($cart);
+                $manager->persist($content);
+                $cart->addCartContent($content);
+            }
+
+            $booster->setStock($booster->getStock() - $quantity);
+            $manager->flush();
         }
 
-        $booster->setStock($booster->getStock() - $quantity);
-        $manager->flush();
-
-        return $this->redirectToRoute('user_cart');
+        return $this->redirectToRoute('product_list');
     }
 
     #[Route('/cart/clear', name: '_cart_clear')]

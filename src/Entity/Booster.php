@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\BoosterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'l3_booster')]
 #[ORM\Entity(repositoryClass: BoosterRepository::class)]
@@ -21,15 +24,24 @@ class Booster
     #[ORM\JoinColumn(nullable: false)]
     private ?Expansion $expansion = null;
 
+    #[Assert\Positive(message: "Le prix doit être positif.")]
     #[ORM\Column]
     private ?float $price = null;
 
+    #[Assert\Positive(message: "La quantité en stock doit être positive.")]
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    /**
+     * @var Collection<int, BoosterCountry>
+     */
+    #[ORM\OneToMany(targetEntity: BoosterCountry::class, mappedBy: 'booster', orphanRemoval: true)]
+    private Collection $boosterCountries;
+
+    public function __construct()
+    {
+        $this->boosterCountries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,14 +101,32 @@ class Booster
         return $this;
     }
 
-    public function getCountry(): ?Country
+    /**
+     * @return Collection<int, BoosterCountry>
+     */
+    public function getBoosterCountries(): Collection
     {
-        return $this->country;
+        return $this->boosterCountries;
     }
 
-    public function setCountry(?Country $country): static
+    public function addBoosterCountry(BoosterCountry $boosterCountry): static
     {
-        $this->country = $country;
+        if (!$this->boosterCountries->contains($boosterCountry)) {
+            $this->boosterCountries->add($boosterCountry);
+            $boosterCountry->setBooster($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoosterCountry(BoosterCountry $boosterCountry): static
+    {
+        if ($this->boosterCountries->removeElement($boosterCountry)) {
+            // set the owning side to null (unless already changed)
+            if ($boosterCountry->getBooster() === $this) {
+                $boosterCountry->setBooster(null);
+            }
+        }
 
         return $this;
     }

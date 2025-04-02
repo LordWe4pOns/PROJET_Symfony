@@ -13,6 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
@@ -22,20 +24,11 @@ class RegistrationFormType extends AbstractType
             ->add('login', TextType::class, [
                 'label' => 'Identifiant',
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('password', PasswordType::class, [
                 'label' => "Mot de passe",
-                'mapped' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrez un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Le mot de passe doit faire au moins {{ limit }} caractères',
-                        'max' => 30,
-                        'maxMessage' => 'Le mot de passe doit faire au plus {{ limit }} caractères'
                     ]),
                 ],
             ])
@@ -55,6 +48,8 @@ class RegistrationFormType extends AbstractType
                     },
                     'placeholder' => 'Select a country',
                     'expanded' => false,
+                    'required' => false,
+                    'empty_data' => null,
                 ]
             )
             ->add('birthday',

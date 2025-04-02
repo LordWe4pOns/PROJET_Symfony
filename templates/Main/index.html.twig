@@ -1,10 +1,17 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
-    {% set fullname = app.user ? app.user.name ~ ' ' ~ app.user.surname : 'Client Anonyme' %}
-    <h1>Bienvenue sur CardsShop, {{ fullname }} !</h1>
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('CSS/Vue.css') }}"/>
+{% endblock %}
+
+{% block vue %}
+    <h1>Bienvenue sur CardsShop, {{ fullname }} de {{ country }} !</h1>
+    <br/>
+    <p>Vous avez le role : {{ role }}</p>
     <br/>
     <p>Vous êtes sur le meilleur site de boosters pokemon !</p>
     <br/>

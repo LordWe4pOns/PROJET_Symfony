@@ -1,15 +1,16 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Gérer son profil{% endblock %}
 
-{% block body %}
+{% block vue %}
     <h1>Bonjour {{ user.name }} !</h1>
 
     {{ form_errors(editForm) }}
 
     {{ form_start(editForm) }}
         {{ form_row(editForm.login) }}
-        {{ form_row(editForm.plainPassword) }}
+        {{ form_row(editForm.password) }}
         {{ form_row(editForm.name) }}
         {{ form_row(editForm.surname) }}
         {{ form_row(editForm.country) }}

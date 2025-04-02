@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booster;
 use App\Entity\User;
 use App\Form\BoosterFormType;
+use App\Service\DatabaseHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,12 @@ final class AdminController extends AbstractController
     public function gestionClientsAction(EntityManagerInterface $entityManager): Response
     {
         $clients = $entityManager->getRepository(User::class)->findAll();
+
+        $handler = new DatabaseHandler($entityManager);
+
+        foreach ($clients as $client) {
+            $client->mainRole = $handler->getMainRole($client->getId());
+        }
 
         return $this->render('Admin/clients.html.twig', ['clients' => $clients]);
     }
@@ -35,11 +42,15 @@ final class AdminController extends AbstractController
             $cart = $user->getCart();
             if (!is_null($cart))
             {
-                $content = $cart->getContent()->getValues();
-                for ($i = 0; $i < count($content); $i++)
-                {
-                    $content[$i]->setStock($content[$i]->getStock() + 1);
+                $cartContents = $cart->getCartContents()->getValues();
+
+                foreach ($cartContents as $cartContent) {
+                    $quantity = $cartContent->getQuantity();
+                    $booster = $cartContent->getBooster();
+                    $booster->setStock($booster->getStock() + $quantity);
+                    $cart->removeCartContent($cartContent);
                 }
+                
                 $entityManager->remove($cart);
             }
             $entityManager->remove($user);
@@ -58,8 +69,7 @@ final class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($booster);
             $entityManager->flush();
-
-            $this->addFlash('info', 'Le nouveau booster à été créé !');
+            $this->addFlash('success', '🎁Nouveau produit ajouté avec succes🎁');
 
             return $this->redirectToRoute('main');
         }

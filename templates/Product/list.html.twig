@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Liste des Produits{% endblock %}
 
-{% block body %}
+{% block vue %}
     <h1>Liste des Produits du site</h1>
 
     <table>
@@ -23,18 +24,24 @@
                 <td>{{ booster.stock }}</td>
                 <td>{{ booster.expansionName }}</td>
                 <td>
+                    {% if booster.id is not same as(0) and booster.stock is not same as(0) %}
                     <form action="{{ path('user_cart_add', { 'id': booster.id }) }}" method="post">
                         <input type="hidden" name="boosters_id" value="{{ booster.id }}">
 
                         <label for="quantite_{{ booster.id }}">Quantité :</label>
                         <select name="quantite" id="quantite_{{ booster.id }}">
                             {% for i in range(minQuantities.(booster.id), booster.stock) %}
-                                <option value="{{ i }}">{{ i }}</option>
+                                <option value="{{ i }}" {% if i is same as(0) %} selected {% endif %}>
+                                    {{ i }}
+                                </option>
                             {% endfor %}
                         </select>
 
-                        <button type="submit">Ajouter au panier</button>
+                        <button type="submit">Modifier</button>
                     </form>
+                    {% else %}
+                        Rupture de stock
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

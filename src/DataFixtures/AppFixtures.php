@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Booster;
+use App\Entity\BoosterCountry;
 use App\Entity\Cart;
 use App\Entity\Country;
 use App\Entity\Expansion;
@@ -250,6 +251,8 @@ class AppFixtures extends Fixture
             ->setUser($user6);
         $manager->persist($cart6);
 
+        //alimentation extensions
+
         $expansion1 = new expansion();
         $expansion1
             ->setName("Écarlate et Violet")
@@ -262,77 +265,119 @@ class AppFixtures extends Fixture
             ->setNumber(8);
         $manager->persist($expansion2);
 
+        //alimentation boosters
+
         $booster1 = new booster();
         $booster1
             ->setExpansion($expansion1)
-            ->setCountry($country1)
             ->setName("Évolutions à Paldea")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster1);
 
+        $boosterCountry1 = new boosterCountry();
+        $boosterCountry1
+            ->setCountry($country1)
+            ->setBooster($booster1);
+        $manager->persist($boosterCountry1);
+
         $booster2 = new booster();
         $booster2
             ->setExpansion($expansion1)
-            ->setCountry($country1)
             ->setName("Flammes obsidiennes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster2);
 
+        $boosterCountry2 = new boosterCountry();
+        $boosterCountry2
+            ->setCountry($country1)
+            ->setBooster($booster2);
+        $manager->persist($boosterCountry2);
+
         $booster3 = new booster();
         $booster3
             ->setExpansion($expansion1)
-            ->setCountry($country1)
             ->setName("Faille paradoxe")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster3);
 
+        $boosterCountry3 = new boosterCountry();
+        $boosterCountry3
+            ->setCountry($country1)
+            ->setBooster($booster3);
+        $manager->persist($boosterCountry3);
+
         $booster4 = new booster();
         $booster4
             ->setExpansion($expansion1)
-            ->setCountry($country1)
             ->setName("Étincelles déferlantes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster4);
 
+        $boosterCountry4 = new boosterCountry();
+        $boosterCountry4
+            ->setCountry($country1)
+            ->setBooster($booster4);
+        $manager->persist($boosterCountry4);
+
         $booster5 = new booster();
         $booster5
             ->setExpansion($expansion2)
-            ->setCountry($country1)
             ->setName("Clash des rebelles")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster5);
 
+        $boosterCountry5 = new boosterCountry();
+        $boosterCountry5
+            ->setCountry($country1)
+            ->setBooster($booster5);
+        $manager->persist($boosterCountry5);
+
         $booster6 = new booster();
         $booster6
             ->setExpansion($expansion2)
-            ->setCountry($country1)
             ->setName("Règne de glace")
             ->setPrice(6)
             ->setStock(150);
         $manager->persist($booster6);
 
+        $boosterCountry6 = new boosterCountry();
+        $boosterCountry6
+            ->setCountry($country1)
+            ->setBooster($booster6);
+        $manager->persist($boosterCountry6);
+
         $booster7 = new booster();
         $booster7
             ->setExpansion($expansion2)
-            ->setCountry($country1)
             ->setName("Stars étincelantes")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster7);
 
+        $boosterCountry7 = new boosterCountry();
+        $boosterCountry7
+            ->setCountry($country1)
+            ->setBooster($booster7);
+        $manager->persist($boosterCountry7);
+
         $booster8 = new booster();
         $booster8
             ->setExpansion($expansion2)
-            ->setCountry($country1)
             ->setName("Origine perdue")
             ->setPrice(7)
             ->setStock(150);
         $manager->persist($booster8);
+
+        $boosterCountry8 = new boosterCountry();
+        $boosterCountry8
+            ->setCountry($country1)
+            ->setBooster($booster8);
+        $manager->persist($boosterCountry8);
 
 
         $manager->flush();

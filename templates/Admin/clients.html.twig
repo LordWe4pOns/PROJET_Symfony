@@ -1,13 +1,14 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Gestion des clients{% endblock %}
 
-{% block body %}
+{% block vue %}
     <h1>Tous les clients du site</h1>
     <table>
         <thead>
         <tr>
-            <th>Login</th>
+            <th>Identifiant</th>
             <th>Mot de passe</th>
             <th>Prénom</th>
             <th>Nom</th>
@@ -25,12 +26,14 @@
                 <td>{{ client.surname }}</td>
                 {% set bday = client.birthday ? client.birthday |date('d/m/Y') : 'Non renseigné' %}
                 <td>{{ bday }}</td>
+                <td>{{ client.mainRole }}</td>
                 <td>
-                    {% for role in client.roles %}
-                        [{{ role }}]
-                    {% endfor %}
+                    {% if client.country %}
+                        {{ client.country.name }} ({{ client.country.code }})
+                    {% else %}
+                        Inconnu
+                    {% endif %}
                 </td>
-                <td>{{ client.country.name }} ({{ client.country.code }})</td>
                 {% if app.user.id is not same as(client.id) and 'ROLE_ADMIN' not in client.roles and 'ROLE_SUPER_ADMIN' not in client.roles %}
                 <td><button onclick="window.location.href='{{ path('admin_delete', {id: client.id}) }}'">Supprimer</button></td>
                 {% endif %}

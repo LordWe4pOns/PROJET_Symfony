@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'l3_user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_LOGIN', fields: ['login'])]
-#[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
-#[UniqueEntity(fields: ['name', 'surname'], message: 'This person already exists in the system')]
+#[UniqueEntity(fields: ['login'], message: 'Cet identifiant est déjà utilisé')]
+#[UniqueEntity(fields: ['name', 'surname'], message: 'Cette personne existe déjà')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -33,6 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+
     #[ORM\Column]
     private ?string $password = null;
 
@@ -46,12 +49,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Country $country = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Cart $cart = null;
+
+    #[Assert\Callback]
+    public function validateDiffLoginPassword(ExecutionContextInterface $context): void
+    {
+        if ($this->login === $this->password) {
+            $context
+                ->buildViolation('Le login et le mot de passe doivent être différents')
+                ->atPath('password')
+                ->addViolation();
+        }
+    }
+
+    #[Assert\Callback]
+    public function validatePasswordLength(ExecutionContextInterface $context): void
+    {
+        if (strlen($this->password) > 30 || strlen($this->password) < 3) {
+            $context
+                ->buildViolation('Le mot de passe doit faire entre 3 et 30 caractères')
+                ->atPath('password')
+                ->addViolation();
+        }
+    }
 
     public function getId(): ?int
     {
@@ -88,7 +113,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_NOROLE';
 
         return array_unique($roles);
     }

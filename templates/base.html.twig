@@ -4,58 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mon Site{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('CSS/Style.CSS') }}">
 </head>
 <body>
-<!-- Bandeau supérieur -->
-<header>
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <img src="{{ asset('Pictures/bandeau_haut_sadmin.png') }}" alt="Bandeau Super-admin">
-    {% elseif is_granted('ROLE_ADMIN') %}
-        <img src="{{ asset('Pictures/bandeau_haut_admin.png') }}" alt="Bandeau Admin">
-    {% elseif is_granted('ROLE_USER') %}
-        <img src="{{ asset('Pictures/bandeau_haut_user.png') }}" alt="Bandeau Utilisateur">
-    {% else %}
-        <img src="{{ asset('Pictures/bandeau_haut_visiteur.png') }}" alt="Bandeau Visiteur">
-    {% endif %}
-</header>
-
-<!-- Menu -->
-<nav>
-    <ul>
-        {% if app.user %}
-            <li><a href="{{ path('main') }}">Accueil</a></li>
-            <li><a href="{{ path('user_profile') }}">Gérer le profil</a></li>
-            {% if is_granted('ROLE_USER') %}
-                <li><a href="{{ path('product_list') }}">Lister les produits</a></li>
-                <li><a href="{{ path('user_cart') }}">Gérer le panier</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{ path('admin_gestion_clients') }}">Gérer les clients</a></li>
-                <li><a href="{{ path('product_add_booster') }}">Créer un produit</a></li>
-                <li><a href="https://fr.wikipedia.org/wiki/Pong">Lien vers site extérieur</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <li><a href="{{ path('sadmin_edit_admin') }}">Gérer les administrateurs</a></li>
-            {% endif %}
-            <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>
-        {% else %}
-            <li><a href="{{ path('main') }}">Accueil</a></li>
-            <li><a href="{{ path('security_login') }}">Connexion</a></li>
-            <li><a href="{{ path('register') }}">Créer un compte</a></li>
-        {% endif %}
-    </ul>
-</nav>
-
-<!-- Contenu -->
-<main>
-    {% block body %}{% endblock %}
-</main>
-
-<!-- Pied de page -->
-<footer>
-    <br/>
-    <img src="{{ asset('Pictures/bandeau_footer.png') }}" alt="Bandeau Bas">
-</footer>
+<h1>Bonum vinum laetificat cor hominis</h1>
 </body>
 </html>

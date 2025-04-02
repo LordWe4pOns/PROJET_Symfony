@@ -1,15 +1,16 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}S'inscrire{% endblock %}
 
-{% block body %}
+{% block vue %}
     <h1>Inscription</h1>
 
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.login) }}
-        {{ form_row(registrationForm.plainPassword) }}
+        {{ form_row(registrationForm.password) }}
         {{ form_row(registrationForm.name) }}
         {{ form_row(registrationForm.surname) }}
         {{ form_row(registrationForm.country) }}

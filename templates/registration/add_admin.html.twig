@@ -1,15 +1,16 @@
-{% extends 'base.html.twig' %}
+{# niveau 3 #}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
 {% block title %}Gestion des admins{% endblock %}
 
-{% block body %}
+{% block vue %}
     <h1>Ajouter un administrateur</h1>
 
     {{ form_errors(adminForm) }}
 
     {{ form_start(adminForm) }}
         {{ form_row(adminForm.login) }}
-        {{ form_row(adminForm.plainPassword) }}
+        {{ form_row(adminForm.password) }}
         {{ form_row(adminForm.name) }}
         {{ form_row(adminForm.surname) }}
         {{ form_row(adminForm.country) }}

@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
-use App\Form\EditAdminFormType;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,11 +24,15 @@ final class SuperAdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+            $plainPassword = $user->getPassword();
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_ADMIN']);
+
+            $cart = new Cart();
+            $cart->setUser($user);
+            $user->setCart($cart);
 
             $entityManager->persist($user);
             $entityManager->flush();
