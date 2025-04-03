@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: '_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function loginAction(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -26,13 +26,13 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: '_logout')]
-    public function logout(): void
+    public function logoutAction(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     #[Route(path: '/logout/message', name: '_logout_message')]
-    public function logoutMessage()
+    public function logoutMessageAction() : Response
     {
         $this->addFlash('success', '🔌Vous avez été déconnecté🔌');
         return $this->redirectToRoute('main');
